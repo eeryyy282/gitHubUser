@@ -3,15 +3,19 @@ package com.example.githubuser.ui
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.githubuser.R
 import com.example.githubuser.data.response.UserDetailResponse
 import com.example.githubuser.databinding.ActivityDetailUserBinding
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 
 
 class DetailUserActivity : AppCompatActivity() {
@@ -20,6 +24,12 @@ class DetailUserActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_USERNAME = "extra_username"
+
+        @StringRes
+        private val TAB_TITTLES = intArrayOf(
+            R.string.tab_text_1,
+            R.string.tab_text_2
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,6 +44,8 @@ class DetailUserActivity : AppCompatActivity() {
             insets
         }
 
+        supportActionBar?.elevation = 0f
+
         val detailUserViewModel = ViewModelProvider(
             this,
             ViewModelProvider.NewInstanceFactory()
@@ -43,6 +55,14 @@ class DetailUserActivity : AppCompatActivity() {
         if (username != null) {
             detailUserViewModel.setUsername(username)
         }
+
+        val sectionPageAdapter = SectionPageAdapter(this, username)
+        val viewPager: ViewPager2 = findViewById(R.id.view_pager)
+        viewPager.adapter = sectionPageAdapter
+        val tabs: TabLayout = findViewById(R.id.tabs)
+        TabLayoutMediator(tabs, viewPager) { tab, position ->
+            tab.text = resources.getString(TAB_TITTLES[position])
+        }.attach()
 
         detailUserViewModel.userDetail.observe(this) { userDetailData ->
             setUserData(userDetailData)

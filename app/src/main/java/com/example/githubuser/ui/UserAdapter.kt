@@ -1,6 +1,7 @@
 package com.example.githubuser.ui
 
 import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.githubuser.data.response.Users
 import com.example.githubuser.databinding.ItemUserBinding
+import com.example.githubuser.ui.fragment.FollowFragment
 
 class UserAdapter : ListAdapter<Users, UserAdapter.MyViewHolder>(DIFF_CALLBACK){
 
@@ -22,8 +24,12 @@ class UserAdapter : ListAdapter<Users, UserAdapter.MyViewHolder>(DIFF_CALLBACK){
         holder.bind(user)
 
         holder.itemView.setOnClickListener {
-            val intentUsername = Intent(holder.itemView.context, DetailUserActivity::class.java)
-            intentUsername.putExtra(DetailUserActivity.EXTRA_USERNAME, user.login)
+            val username = user.login
+
+            val intentUsername = Intent(holder.itemView.context, DetailUserActivity::class.java).apply {
+                putExtra(DetailUserActivity.EXTRA_USERNAME, username)
+                putExtra(FollowFragment.EXTRA_USERNAME, username)
+            }
             holder.itemView.context.startActivity(intentUsername)
         }
     }
