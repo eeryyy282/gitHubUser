@@ -2,7 +2,6 @@ package com.example.githubuser.ui
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -11,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.githubuser.R
-import com.example.githubuser.utils.Event
 import com.example.githubuser.data.response.Users
 import com.example.githubuser.databinding.ActivityMainBinding
 import com.google.android.material.snackbar.Snackbar

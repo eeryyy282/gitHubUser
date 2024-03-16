@@ -27,6 +27,7 @@
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
+            android:textStyle="bold"
             android:id="@+id/tvUsername"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
