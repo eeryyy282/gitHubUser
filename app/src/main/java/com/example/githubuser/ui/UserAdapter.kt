@@ -1,5 +1,6 @@
 package com.example.githubuser.ui
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
@@ -19,6 +20,12 @@ class UserAdapter : ListAdapter<Users, UserAdapter.MyViewHolder>(DIFF_CALLBACK){
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val user = getItem(position)
         holder.bind(user)
+
+        holder.itemView.setOnClickListener {
+            val intentUsername = Intent(holder.itemView.context, DetailUserActivity::class.java)
+            intentUsername.putExtra(DetailUserActivity.EXTRA_USERNAME, user.login)
+            holder.itemView.context.startActivity(intentUsername)
+        }
     }
 
     class MyViewHolder (val binding: ItemUserBinding): RecyclerView.ViewHolder(binding.root) {
