@@ -1,5 +1,6 @@
 package com.example.githubuser.ui
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -28,7 +29,7 @@ class DetailUserViewModel:ViewModel() {
         _username.value = username
         findUserDetail()
     }
-    fun findUserDetail() {
+    private fun findUserDetail() {
         _isLoading.value = true
         val username = _username.value
         if(!username.isNullOrEmpty()) {
@@ -42,15 +43,20 @@ class DetailUserViewModel:ViewModel() {
                 if (response.isSuccessful) {
                     _userDetail.value = response.body()
                 } else {
-                    _snackbarText.value = Event("Gagal mendapatkan detail user :(")
+                    _snackbarText.value = Event("Gagal mendapatkan detail user : ${response.message()}")
+                    Log.e(TAG, "onfailure: ${response.message()}")
                 }
             }
 
             override fun onFailure(call: Call<UserDetailResponse>, t: Throwable) {
                 _isLoading.value = false
-                _snackbarText.value = Event("Failed to fetch user detail: ${t.message}")
+                _snackbarText.value = Event("Gagal mendapatkan detail User: ${t.message}")
+                Log.e(TAG, "onfailure: ${t.message}")
             }
         })
     }
+    }
+    companion object {
+        private const val TAG = "DetailUserActivity"
     }
 }

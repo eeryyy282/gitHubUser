@@ -37,16 +37,22 @@ class MainViewModel: ViewModel() {
                         _userResponse.value = users
                     }
                 } else {
+                    _snackbarText.value = Event("Gagal memuat user | ${response.message()}")
                     Log.e(TAG, "onfailure: ${response.message()}")
                 }
             }
 
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                 _isLoading.value = false
+                _snackbarText.value = Event("Gagal memuat user | ${t.message}")
                 Log.e(TAG, "onfailure: ${t.message}")
             }
 
         })
+    }
+
+    fun snackBar(message: String) {
+        _snackbarText.value = Event(message)
     }
 
     companion object {

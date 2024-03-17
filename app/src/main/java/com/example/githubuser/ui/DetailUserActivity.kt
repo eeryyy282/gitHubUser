@@ -1,5 +1,6 @@
 package com.example.githubuser.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
@@ -49,7 +50,7 @@ class DetailUserActivity : AppCompatActivity() {
         val detailUserViewModel = ViewModelProvider(
             this,
             ViewModelProvider.NewInstanceFactory()
-        ).get(DetailUserViewModel::class.java)
+        )[DetailUserViewModel::class.java]
 
         val username = intent.getStringExtra(EXTRA_USERNAME)
         if (username != null) {
@@ -85,6 +86,7 @@ class DetailUserActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setUserData(responseBody: UserDetailResponse?) {
         with(binding) {
             tvId.text = responseBody?.id.toString()
@@ -97,6 +99,7 @@ class DetailUserActivity : AppCompatActivity() {
             tvFollowing.text = "${responseBody?.following.toString()} Following"
         }
     }
+
 
     private fun showLoading(isLoading: Boolean) {
         if (isDataLoaded) {

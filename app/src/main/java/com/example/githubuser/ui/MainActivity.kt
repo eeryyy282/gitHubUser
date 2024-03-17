@@ -31,13 +31,13 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        val mainViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(MainViewModel::class.java)
+        val mainViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[MainViewModel::class.java]
         mainViewModel.userResponse.observe(this) { userData ->
             setUserData(userData)
         }
 
         if (mainViewModel.userResponse.value.isNullOrEmpty()) {
-            mainViewModel.findUser("airi")
+            mainViewModel.findUser("Airi")
         }
 
         val layoutManager = GridLayoutManager(this, 2)
@@ -63,11 +63,15 @@ class MainActivity : AppCompatActivity() {
             searchView.setupWithSearchBar(searchBar)
             searchView
                 .editText
-                .setOnEditorActionListener { v, actionId, event ->
+                .setOnEditorActionListener { _, _, _ ->
                     searchBar.setText(searchView.text)
                     searchView.hide()
                     val username = searchBar.text.toString()
-                    mainViewModel.findUser(username)
+                    if (username.isEmpty()) {
+                       mainViewModel.snackBar("Maaf, Username tidak boleh kosong :(")
+                    } else {
+                        mainViewModel.findUser(username)
+                    }
                     false
                 }
         }
