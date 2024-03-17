@@ -15,6 +15,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "GITHUB_ACCES_TOKEN", "\"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\"")
+        buildConfigField("String", "BASE_URL", "\"https://api.github.com/\"")
     }
 
     buildTypes {
