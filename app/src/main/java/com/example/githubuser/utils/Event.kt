@@ -14,5 +14,4 @@ open class Event<out T>(private val user: T)  {
             user
         }
     }
-    fun peekContent(): T = user
 }

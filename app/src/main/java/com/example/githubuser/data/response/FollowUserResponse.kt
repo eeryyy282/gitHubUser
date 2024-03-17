@@ -2,12 +2,6 @@ package com.example.githubuser.data.response
 
 import com.google.gson.annotations.SerializedName
 
-data class FollowUserResponse(
-
-	@field:SerializedName("FollowUserResponse")
-	val followUserResponse: List<FollowUserResponseItem?>? = null
-)
-
 data class FollowUserResponseItem(
 
 	@field:SerializedName("gists_url")

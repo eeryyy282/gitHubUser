@@ -1,6 +1,5 @@
 package com.example.githubuser.data.retrofit
 
-import com.example.githubuser.data.response.FollowUserResponse
 import com.example.githubuser.data.response.FollowUserResponseItem
 import com.example.githubuser.data.response.UserDetailResponse
 import com.example.githubuser.data.response.UserResponse
