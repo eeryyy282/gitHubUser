@@ -4,7 +4,9 @@ import com.example.githubuser.data.response.FollowUserResponseItem
 import com.example.githubuser.data.response.UserDetailResponse
 import com.example.githubuser.data.response.UserResponse
 import retrofit2.Call
-import retrofit2.http.*
+import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
     @GET("search/users")

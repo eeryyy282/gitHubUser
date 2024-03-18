@@ -22,17 +22,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 class DetailUserActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailUserBinding
     private var isDataLoaded = false
-
-    companion object {
-        const val EXTRA_USERNAME = "extra_username"
-
-        @StringRes
-        private val TAB_TITTLES = intArrayOf(
-            R.string.tab_text_1,
-            R.string.tab_text_2
-        )
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailUserBinding.inflate(layoutInflater)
@@ -95,8 +84,8 @@ class DetailUserActivity : AppCompatActivity() {
             Glide.with(binding.root)
                 .load(responseBody?.avatarUrl)
                 .into(binding.ivUser)
-            tvFollowers.text = "${responseBody?.followers.toString()} Followers"
-            tvFollowing.text = "${responseBody?.following.toString()} Following"
+            tvFollowers.text = resources.getString(R.string.followers, responseBody?.followers)
+            tvFollowing.text = resources.getString(R.string.following, responseBody?.following)
         }
     }
 
@@ -107,5 +96,15 @@ class DetailUserActivity : AppCompatActivity() {
         } else {
             binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
+    }
+
+    companion object {
+        const val EXTRA_USERNAME = "extra_username"
+
+        @StringRes
+        private val TAB_TITTLES = intArrayOf(
+            R.string.tab_text_1,
+            R.string.tab_text_2
+        )
     }
 }

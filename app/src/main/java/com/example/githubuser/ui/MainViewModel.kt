@@ -7,12 +7,12 @@ import androidx.lifecycle.ViewModel
 import com.example.githubuser.data.response.UserResponse
 import com.example.githubuser.data.response.Users
 import com.example.githubuser.data.retrofit.ApiConfig
+import com.example.githubuser.utils.Event
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import com.example.githubuser.utils.Event
 
-class MainViewModel: ViewModel() {
+class MainViewModel : ViewModel() {
 
     private val _userResponse = MutableLiveData<List<Users>>()
     val userResponse: LiveData<List<Users>> = _userResponse
@@ -28,7 +28,7 @@ class MainViewModel: ViewModel() {
         val client = ApiConfig.getApiService().getUsers(username)
         client.enqueue(object : Callback<UserResponse> {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
-               _isLoading.value = false
+                _isLoading.value = false
                 if (response.isSuccessful) {
                     val users = response.body()?.items
                     if (users.isNullOrEmpty()) {

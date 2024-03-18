@@ -17,12 +17,13 @@ import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    private var _binding: ActivityMainBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.hide()
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -31,7 +32,9 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        val mainViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[MainViewModel::class.java]
+        val mainViewModel = ViewModelProvider(
+            this, ViewModelProvider.NewInstanceFactory()
+        )[MainViewModel::class.java]
         mainViewModel.userResponse.observe(this) { userData ->
             setUserData(userData)
         }
@@ -52,33 +55,34 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.snackbarText.observe(this) {
             it.getContentIfNotHandled()?.let { snackBarText ->
                 Snackbar.make(
-                    window.decorView.rootView,
-                    snackBarText,
-                    Snackbar.LENGTH_SHORT
+                    window.decorView.rootView, snackBarText, Snackbar.LENGTH_SHORT
                 ).show()
-        }
+            }
         }
 
         with(binding) {
             searchView.setupWithSearchBar(searchBar)
-            searchView
-                .editText
-                .setOnEditorActionListener { _, _, _ ->
-                    searchBar.setText(searchView.text)
-                    searchView.hide()
-                    val username = searchBar.text.toString()
-                    if (username.isEmpty()) {
-                       mainViewModel.snackBar("Maaf, Username tidak boleh kosong :(")
-                    } else {
-                        mainViewModel.findUser(username)
-                    }
-                    false
+            searchView.editText.setOnEditorActionListener { _, _, _ ->
+                searchBar.setText(searchView.text)
+                searchView.hide()
+                val username = searchBar.text.toString()
+                if (username.isEmpty()) {
+                    mainViewModel.snackBar("Maaf, Username tidak boleh kosong :(")
+                } else {
+                    mainViewModel.findUser(username)
                 }
+                false
+            }
         }
 
     }
 
-    private fun setUserData(userData: List<Users>)  {
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
+    private fun setUserData(userData: List<Users>) {
         val adapter = UserAdapter()
         adapter.submitList(userData)
         binding.rvReview.adapter = adapter

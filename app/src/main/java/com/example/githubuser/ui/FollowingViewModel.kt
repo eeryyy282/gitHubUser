@@ -10,7 +10,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class FollowingViewModel: ViewModel() {
+class FollowingViewModel : ViewModel() {
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -26,7 +26,7 @@ class FollowingViewModel: ViewModel() {
                 call: Call<List<FollowUserResponseItem>>,
                 response: Response<List<FollowUserResponseItem>>
             ) {
-                if(response.isSuccessful) {
+                if (response.isSuccessful) {
                     val following = response.body()
                     _followingResponse.value = following
                 } else {
@@ -43,6 +43,7 @@ class FollowingViewModel: ViewModel() {
 
         })
     }
+
     companion object {
         private const val TAG = "DetailUserActivity"
     }

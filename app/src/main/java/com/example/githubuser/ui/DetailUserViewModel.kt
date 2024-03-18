@@ -11,7 +11,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class DetailUserViewModel:ViewModel() {
+class DetailUserViewModel : ViewModel() {
 
     private val _username = MutableLiveData<String>()
 
@@ -29,33 +29,36 @@ class DetailUserViewModel:ViewModel() {
         _username.value = username
         findUserDetail()
     }
+
     private fun findUserDetail() {
         _isLoading.value = true
         val username = _username.value
-        if(!username.isNullOrEmpty()) {
-        val client = ApiConfig.getApiService().getDetailUser(username)
-        client.enqueue(object : Callback<UserDetailResponse> {
-            override fun onResponse(
-                call: Call<UserDetailResponse>,
-                response: Response<UserDetailResponse>
-            ) {
-                _isLoading.value = false
-                if (response.isSuccessful) {
-                    _userDetail.value = response.body()
-                } else {
-                    _snackbarText.value = Event("Gagal mendapatkan detail user : ${response.message()}")
-                    Log.e(TAG, "onfailure: ${response.message()}")
+        if (!username.isNullOrEmpty()) {
+            val client = ApiConfig.getApiService().getDetailUser(username)
+            client.enqueue(object : Callback<UserDetailResponse> {
+                override fun onResponse(
+                    call: Call<UserDetailResponse>,
+                    response: Response<UserDetailResponse>
+                ) {
+                    _isLoading.value = false
+                    if (response.isSuccessful) {
+                        _userDetail.value = response.body()
+                    } else {
+                        _snackbarText.value =
+                            Event("Gagal mendapatkan detail user : ${response.message()}")
+                        Log.e(TAG, "onfailure: ${response.message()}")
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<UserDetailResponse>, t: Throwable) {
-                _isLoading.value = false
-                _snackbarText.value = Event("Gagal mendapatkan detail User: ${t.message}")
-                Log.e(TAG, "onfailure: ${t.message}")
-            }
-        })
+                override fun onFailure(call: Call<UserDetailResponse>, t: Throwable) {
+                    _isLoading.value = false
+                    _snackbarText.value = Event("Gagal mendapatkan detail User: ${t.message}")
+                    Log.e(TAG, "onfailure: ${t.message}")
+                }
+            })
+        }
     }
-    }
+
     companion object {
         private const val TAG = "DetailUserActivity"
     }

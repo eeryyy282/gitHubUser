@@ -11,7 +11,8 @@ import com.example.githubuser.data.response.FollowUserResponseItem
 import com.example.githubuser.databinding.ItemUserBinding
 import com.example.githubuser.ui.fragment.FollowFragment
 
-class FollowingAdapter: ListAdapter<FollowUserResponseItem, FollowingAdapter.MyViewHolder>(DIFF_CALLBACK) {
+class FollowingAdapter :
+    ListAdapter<FollowUserResponseItem, FollowingAdapter.MyViewHolder>(DIFF_CALLBACK) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -26,15 +27,17 @@ class FollowingAdapter: ListAdapter<FollowUserResponseItem, FollowingAdapter.MyV
 
         holder.itemView.setOnClickListener {
             val username = following.login
-            val intentUsername = Intent(holder.itemView.context, DetailUserActivity::class.java).apply {
-                putExtra(DetailUserActivity.EXTRA_USERNAME, username)
-                putExtra(FollowFragment.EXTRA_USERNAME, username)
-            }
+            val intentUsername =
+                Intent(holder.itemView.context, DetailUserActivity::class.java).apply {
+                    putExtra(DetailUserActivity.EXTRA_USERNAME, username)
+                    putExtra(FollowFragment.EXTRA_USERNAME, username)
+                }
             holder.itemView.context.startActivity(intentUsername)
         }
     }
 
-    class MyViewHolder(private val binding: ItemUserBinding): RecyclerView.ViewHolder(binding.root) {
+    class MyViewHolder(private val binding: ItemUserBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(followers: FollowUserResponseItem) {
             binding.tvUsername.text = followers.login
             Glide.with(binding.root)
