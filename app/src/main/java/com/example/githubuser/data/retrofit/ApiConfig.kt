@@ -11,19 +11,14 @@ class ApiConfig {
         fun getApiService(): ApiService {
             val authInterceptor = Interceptor { chain ->
                 val req = chain.request()
-                val requestHeader = req.newBuilder()
-                    .addHeader("Authorization", BuildConfig.GITHUB_ACCES_TOKEN)
-                    .build()
+                val requestHeader =
+                    req.newBuilder().addHeader("Authorization", BuildConfig.GITHUB_ACCES_TOKEN)
+                        .build()
                 chain.proceed((requestHeader))
             }
-            val client = OkHttpClient.Builder()
-                .addInterceptor(authInterceptor)
-                .build()
-            val retrofit = Retrofit.Builder()
-                .baseUrl(BuildConfig.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
-                .build()
+            val client = OkHttpClient.Builder().addInterceptor(authInterceptor).build()
+            val retrofit = Retrofit.Builder().baseUrl(BuildConfig.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create()).client(client).build()
             return retrofit.create(ApiService::class.java)
         }
     }
