@@ -4,13 +4,17 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tab_text_1">Followers</string>
     <string name="tab_text_2">Following</string>
-    <string name="followers">%d Followers</string>
-    <string name="following">%d Following</string>
+    <string name="followers">%d\nFollowers</string>
+    <string name="following">%d\nFollowing</string>
     <string name="cari_username">Cari Username</string>
     <string name="github_user_icon">GitHub User Icon</string>
     <string name="github_user">GitHub User</string>
-    <string name="dicoding_early_submition">Dicoding Early Submition</string>
+    <string name="dicoding_early_submition">Dicoding Submition</string>
     <string name="by_n_muhammad_juzairi_safitli">By: \n Muhammad Juzairi Safitli</string>
     <string name="username">Username</string>
     <string name="id">ID</string>
+    <string name="title_activity_main_git_hub_user">MainActivityGitHubUser</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>

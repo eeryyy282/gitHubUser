@@ -1,4 +1,4 @@
-package com.example.githubuser.ui
+package com.example.githubuser.ui.follow
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -10,42 +10,39 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class FollowingViewModel : ViewModel() {
+class FollowersViewModel : ViewModel() {
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    private val _followingResponse = MutableLiveData<List<FollowUserResponseItem>>()
-    val followingResponse: LiveData<List<FollowUserResponseItem>> = _followingResponse
+    private val _followerResponse = MutableLiveData<List<FollowUserResponseItem>>()
+    val followerResponse: LiveData<List<FollowUserResponseItem>> = _followerResponse
 
-    fun getFollowing(username: String) {
+    fun getFollowers(username: String) {
         _isLoading.value = true
-        val client = ApiConfig.getApiService().getFollowing(username)
+        val client = ApiConfig.getApiService().getFollowers(username)
         client.enqueue(object : Callback<List<FollowUserResponseItem>> {
             override fun onResponse(
                 call: Call<List<FollowUserResponseItem>>,
                 response: Response<List<FollowUserResponseItem>>
             ) {
                 if (response.isSuccessful) {
-                    val following = response.body()
-                    _followingResponse.value = following
+                    val followers = response.body()
+                    _followerResponse.value = followers
                 } else {
                     Log.e(TAG, "onfailure: ${response.message()}")
                 }
                 _isLoading.value = false
             }
 
-
             override fun onFailure(call: Call<List<FollowUserResponseItem>>, t: Throwable) {
                 _isLoading.value = false
-                Log.e(TAG, "onFailure: ${t.message}")
+                Log.e(TAG, "onfailure: ${t.message}")
             }
-
         })
     }
 
     companion object {
         private const val TAG = "DetailUserActivity"
     }
-
 }

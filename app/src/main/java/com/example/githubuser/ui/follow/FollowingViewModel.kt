@@ -1,7 +1,6 @@
-package com.example.githubuser.ui
+package com.example.githubuser.ui.follow
 
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,39 +10,42 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class FollowersViewModel : ViewModel() {
+class FollowingViewModel : ViewModel() {
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    private val _followerResponse = MutableLiveData<List<FollowUserResponseItem>>()
-    val followerResponse: LiveData<List<FollowUserResponseItem>> = _followerResponse
+    private val _followingResponse = MutableLiveData<List<FollowUserResponseItem>>()
+    val followingResponse: LiveData<List<FollowUserResponseItem>> = _followingResponse
 
-    fun getFollowers(username: String) {
+    fun getFollowing(username: String) {
         _isLoading.value = true
-        val client = ApiConfig.getApiService().getFollowers(username)
+        val client = ApiConfig.getApiService().getFollowing(username)
         client.enqueue(object : Callback<List<FollowUserResponseItem>> {
             override fun onResponse(
                 call: Call<List<FollowUserResponseItem>>,
                 response: Response<List<FollowUserResponseItem>>
             ) {
                 if (response.isSuccessful) {
-                    val followers = response.body()
-                    _followerResponse.value = followers
+                    val following = response.body()
+                    _followingResponse.value = following
                 } else {
                     Log.e(TAG, "onfailure: ${response.message()}")
                 }
                 _isLoading.value = false
             }
 
+
             override fun onFailure(call: Call<List<FollowUserResponseItem>>, t: Throwable) {
                 _isLoading.value = false
-                Log.e(TAG, "onfailure: ${t.message}")
+                Log.e(TAG, "onFailure: ${t.message}")
             }
+
         })
     }
 
     companion object {
         private const val TAG = "DetailUserActivity"
     }
+
 }

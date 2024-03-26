@@ -1,4 +1,4 @@
-package com.example.githubuser.ui
+package com.example.githubuser.ui.home
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -12,7 +12,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainViewModel : ViewModel() {
+class HomeViewModel : ViewModel() {
 
     private val _userResponse = MutableLiveData<List<Users>>()
     val userResponse: LiveData<List<Users>> = _userResponse

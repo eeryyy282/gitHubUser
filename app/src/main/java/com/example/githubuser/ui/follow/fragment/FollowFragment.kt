@@ -1,4 +1,4 @@
-package com.example.githubuser.ui.fragment
+package com.example.githubuser.ui.follow.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.githubuser.data.response.FollowUserResponseItem
 import com.example.githubuser.databinding.FragmentFollowBinding
-import com.example.githubuser.ui.FollowersAdapter
-import com.example.githubuser.ui.FollowersViewModel
-import com.example.githubuser.ui.FollowingAdapter
-import com.example.githubuser.ui.FollowingViewModel
+import com.example.githubuser.ui.follow.FollowersAdapter
+import com.example.githubuser.ui.follow.FollowersViewModel
+import com.example.githubuser.ui.follow.FollowingAdapter
+import com.example.githubuser.ui.follow.FollowingViewModel
 
 class FollowFragment : Fragment() {
 

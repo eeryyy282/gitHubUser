@@ -15,8 +15,13 @@
         android:theme="@style/Theme.GitHubUser"
         tools:targetApi="31">
         <activity
+            android:name=".ui.MainActivityGitHubUser"
+            android:exported="false"
+            android:label="@string/title_activity_main_git_hub_user" />
+        <activity
             android:name=".ui.SplashScreen"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,11 +29,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.DetailUserActivity"
+            android:name=".ui.detail.DetailUserActivity"
             android:exported="false" />
-        <activity
-            android:name=".ui.MainActivity"
-            android:exported="false"/>
     </application>
 
 </manifest>

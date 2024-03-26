@@ -1,4 +1,4 @@
-package com.example.githubuser.ui
+package com.example.githubuser.ui.detail
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -52,7 +52,7 @@ class DetailUserViewModel : ViewModel() {
 
                 override fun onFailure(call: Call<UserDetailResponse>, t: Throwable) {
                     _isLoading.value = false
-                    _snackbarText.value = Event("Gagal mendapatkan detail User: ${t.message}")
+                    _snackbarText.value = Event("Detail user tidak ditemukan: ${t.message}")
                     Log.e(TAG, "onfailure: ${t.message}")
                 }
             })

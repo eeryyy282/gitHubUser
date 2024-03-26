@@ -1,4 +1,4 @@
-package com.example.githubuser.ui
+package com.example.githubuser.ui.follow
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.githubuser.data.response.FollowUserResponseItem
 import com.example.githubuser.databinding.ItemUserBinding
-import com.example.githubuser.ui.fragment.FollowFragment
+import com.example.githubuser.ui.detail.DetailUserActivity
+import com.example.githubuser.ui.follow.fragment.FollowFragment
 
 class FollowingAdapter :
     ListAdapter<FollowUserResponseItem, FollowingAdapter.MyViewHolder>(DIFF_CALLBACK) {

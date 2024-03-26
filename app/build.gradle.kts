@@ -16,7 +16,11 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "GITHUB_ACCES_TOKEN", "\"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\"")
+        buildConfigField(
+            "String",
+            "GITHUB_ACCES_TOKEN",
+            "\"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\""
+        )
         buildConfigField("String", "BASE_URL", "\"https://api.github.com/\"")
     }
 
@@ -50,6 +54,10 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
