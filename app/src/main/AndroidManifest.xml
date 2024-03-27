@@ -17,6 +17,7 @@
         <activity
             android:name=".ui.MainActivityGitHubUser"
             android:exported="false"
+            android:windowSoftInputMode="adjustPan"
             android:label="@string/title_activity_main_git_hub_user" />
         <activity
             android:name=".ui.SplashScreen"

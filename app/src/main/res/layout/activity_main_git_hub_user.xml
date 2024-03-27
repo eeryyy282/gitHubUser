@@ -19,7 +19,7 @@
         app:itemTextColor="@color/color_nav_main"
         app:menu="@menu/bottom_nav_menu" />
 
-    <androidx.fragment.app.FragmentContainerView
+    <fragment
         android:id="@+id/nav_host_fragment_activity_main_git_hub_user"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"

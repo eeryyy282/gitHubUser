@@ -1,12 +1,15 @@
 package com.example.githubuser.ui.detail
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
-import android.text.Html
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
@@ -15,6 +18,7 @@ import com.bumptech.glide.Glide
 import com.example.githubuser.R
 import com.example.githubuser.data.response.UserDetailResponse
 import com.example.githubuser.databinding.ActivityDetailUserBinding
+import com.example.githubuser.ui.MainActivityGitHubUser
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -23,6 +27,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 class DetailUserActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailUserBinding
     private var isDataLoaded = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -54,6 +59,13 @@ class DetailUserActivity : AppCompatActivity() {
             tab.text = resources.getString(TAB_TITTLES[position])
         }.attach()
 
+        val toolbar: Toolbar = binding.topAppBar
+        setSupportActionBar(toolbar)
+
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+
         detailUserViewModel.userDetail.observe(this) { userDetailData ->
             setUserData(userDetailData)
             isDataLoaded = true
@@ -73,9 +85,33 @@ class DetailUserActivity : AppCompatActivity() {
                 ).show()
             }
         }
+    }
 
-        val title = "Detail user <font color='${getColor(R.color.blue_apps)}'>$username</font>"
-        supportActionBar?.title = Html.fromHtml(title, Html.FROM_HTML_MODE_LEGACY)
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.detail_user_nav, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                val intent = Intent(this, MainActivityGitHubUser::class.java).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                }
+                startActivity(intent)
+                true
+            }
+
+            R.id.favorite -> {
+                true
+            }
+
+            R.id.share -> {
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     @SuppressLint("SetTextI18n")

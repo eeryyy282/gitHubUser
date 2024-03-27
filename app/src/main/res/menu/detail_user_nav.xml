@@ -7,11 +7,11 @@
         android:iconTint="?android:textColorPrimary"
         android:title="@string/favorite"
         app:showAsAction="always"
-        android:icon="@drawable/baseline_favorite_border_24"/>
+        android:icon="@drawable/baseline_favorite_border_24" />
     <item
         android:id="@+id/share"
         android:icon="@drawable/baseline_share_24"
         android:iconTint="?android:textColorPrimary"
         android:title="@string/share"
-        app:showAsAction="always"/>
+        app:showAsAction="always" />
 </menu>
