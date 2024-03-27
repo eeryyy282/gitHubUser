@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.githubuser.data.response.Users
+import com.example.githubuser.data.remote.response.Users
 import com.example.githubuser.databinding.FragmentHomeBinding
 import com.example.githubuser.ui.UserAdapter
 import com.google.android.material.snackbar.Snackbar

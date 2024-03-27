@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.githubuser.data.response.FollowUserResponseItem
+import com.example.githubuser.data.remote.response.FollowUserResponseItem
 import com.example.githubuser.databinding.FragmentFollowBinding
 import com.example.githubuser.ui.detail.follow.FollowersAdapter
 import com.example.githubuser.ui.detail.follow.FollowersViewModel

@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.githubuser.R
-import com.example.githubuser.data.response.UserDetailResponse
+import com.example.githubuser.data.remote.response.UserDetailResponse
 import com.example.githubuser.databinding.ActivityDetailUserBinding
 import com.example.githubuser.ui.MainActivityGitHubUser
 import com.google.android.material.snackbar.Snackbar

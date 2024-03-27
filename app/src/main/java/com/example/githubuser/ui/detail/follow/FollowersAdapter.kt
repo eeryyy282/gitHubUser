@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.githubuser.data.response.FollowUserResponseItem
+import com.example.githubuser.data.remote.response.FollowUserResponseItem
 import com.example.githubuser.databinding.ItemUserBinding
 import com.example.githubuser.ui.detail.DetailUserActivity
 import com.example.githubuser.ui.detail.follow.fragment.FollowFragment
