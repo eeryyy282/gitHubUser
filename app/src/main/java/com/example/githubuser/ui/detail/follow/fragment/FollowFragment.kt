@@ -1,4 +1,4 @@
-package com.example.githubuser.ui.follow.fragment
+package com.example.githubuser.ui.detail.follow.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,10 +10,11 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.githubuser.data.response.FollowUserResponseItem
 import com.example.githubuser.databinding.FragmentFollowBinding
-import com.example.githubuser.ui.follow.FollowersAdapter
-import com.example.githubuser.ui.follow.FollowersViewModel
-import com.example.githubuser.ui.follow.FollowingAdapter
-import com.example.githubuser.ui.follow.FollowingViewModel
+import com.example.githubuser.ui.detail.follow.FollowersAdapter
+import com.example.githubuser.ui.detail.follow.FollowersViewModel
+import com.example.githubuser.ui.detail.follow.FollowingAdapter
+import com.example.githubuser.ui.detail.follow.FollowingViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class FollowFragment : Fragment() {
 
@@ -61,6 +62,22 @@ class FollowFragment : Fragment() {
             followersViewModel.isLoading.observe(viewLifecycleOwner) {
                 showLoading(it)
             }
+            followersViewModel.snackbarText.observe(viewLifecycleOwner) {
+                it.getContentIfNotHandled()?.let { snackBarText ->
+                    Snackbar.make(
+                        requireView(), snackBarText, Snackbar.LENGTH_SHORT
+                    ).show()
+                }
+            }
+            followersViewModel.isListEmpty.observe(viewLifecycleOwner) { isEmpty ->
+                if (isEmpty) {
+                    binding.noFollow.visibility = View.VISIBLE
+                    binding.noFollow.text = "Tidak ada followers"
+                } else {
+                    binding.noFollow.visibility = View.GONE
+                }
+            }
+
 
         } else {
             if (username != null) {
@@ -74,6 +91,22 @@ class FollowFragment : Fragment() {
             followingViewModel.isLoading.observe(viewLifecycleOwner) {
                 showLoading(it)
             }
+            followingViewModel.snackbarText.observe(viewLifecycleOwner) {
+                it.getContentIfNotHandled()?.let { snackBarText ->
+                    Snackbar.make(
+                        requireView(), snackBarText, Snackbar.LENGTH_SHORT
+                    ).show()
+                }
+            }
+            followingViewModel.isListEmpty.observe(viewLifecycleOwner) { isEmpty ->
+                if (isEmpty) {
+                    binding.noFollow.visibility = View.VISIBLE
+                    binding.noFollow.text = "Tidak ada following"
+                } else {
+                    binding.noFollow.visibility = View.GONE
+                }
+            }
+
 
         }
 

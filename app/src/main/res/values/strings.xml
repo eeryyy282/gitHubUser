@@ -14,7 +14,11 @@
     <string name="username">Username</string>
     <string name="id">ID</string>
     <string name="title_activity_main_git_hub_user">MainActivityGitHubUser</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
+    <string name="title_home">Beranda</string>
+    <string name="title_favorite">Favorit</string>
     <string name="title_notifications">Notifications</string>
+    <string name="favorite">Favorit</string>
+    <string name="share">Bagikan</string>
+    <string name="org_icon">Org Icon</string>
+    <string name="loc_icon">Loc Icon</string>
 </resources>

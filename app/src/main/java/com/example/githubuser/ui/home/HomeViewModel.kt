@@ -56,6 +56,6 @@ class HomeViewModel : ViewModel() {
     }
 
     companion object {
-        private const val TAG = "MainActivity"
+        private const val TAG = "MainActivityGitHubUser"
     }
 }

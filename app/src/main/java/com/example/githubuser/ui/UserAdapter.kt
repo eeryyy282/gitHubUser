@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide
 import com.example.githubuser.data.response.Users
 import com.example.githubuser.databinding.ItemUserBinding
 import com.example.githubuser.ui.detail.DetailUserActivity
-import com.example.githubuser.ui.follow.fragment.FollowFragment
+import com.example.githubuser.ui.detail.follow.fragment.FollowFragment
 
 class UserAdapter : ListAdapter<Users, UserAdapter.MyViewHolder>(DIFF_CALLBACK) {
 

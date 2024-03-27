@@ -2,10 +2,13 @@ package com.example.githubuser.ui.detail
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.Html
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
@@ -27,6 +30,11 @@ class DetailUserActivity : AppCompatActivity() {
         binding = ActivityDetailUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
         val detailUserViewModel = ViewModelProvider(
             this,
@@ -65,6 +73,9 @@ class DetailUserActivity : AppCompatActivity() {
                 ).show()
             }
         }
+
+        val title = "Detail user <font color='${getColor(R.color.blue_apps)}'>$username</font>"
+        supportActionBar?.title = Html.fromHtml(title, Html.FROM_HTML_MODE_LEGACY)
     }
 
     @SuppressLint("SetTextI18n")
@@ -78,6 +89,14 @@ class DetailUserActivity : AppCompatActivity() {
                 .into(binding.ivUser)
             tvFollowers.text = resources.getString(R.string.followers, responseBody?.followers)
             tvFollowing.text = resources.getString(R.string.following, responseBody?.following)
+            tvLocation.text = responseBody?.location
+            if (tvLocation.text.isNullOrEmpty()) {
+                tvLocation.text = "Lokasi belum ditambahkan"
+            }
+            tvOrganitation.text = responseBody?.company
+            if (tvOrganitation.text.isNullOrEmpty()) {
+                tvOrganitation.text = "Organisasi belum ditambahkan"
+            }
         }
     }
 

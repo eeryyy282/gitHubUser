@@ -1,6 +1,7 @@
 package com.example.githubuser.ui
 
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -16,6 +17,7 @@ class MainActivityGitHubUser : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
 
         binding = ActivityMainGitHubUserBinding.inflate(layoutInflater)
         setContentView(binding.root)

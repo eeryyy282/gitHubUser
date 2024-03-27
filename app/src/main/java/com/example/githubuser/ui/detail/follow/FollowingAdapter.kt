@@ -1,4 +1,4 @@
-package com.example.githubuser.ui.follow
+package com.example.githubuser.ui.detail.follow
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -10,11 +10,10 @@ import com.bumptech.glide.Glide
 import com.example.githubuser.data.response.FollowUserResponseItem
 import com.example.githubuser.databinding.ItemUserBinding
 import com.example.githubuser.ui.detail.DetailUserActivity
-import com.example.githubuser.ui.follow.fragment.FollowFragment
+import com.example.githubuser.ui.detail.follow.fragment.FollowFragment
 
-class FollowersAdapter :
-    ListAdapter<FollowUserResponseItem, FollowersAdapter.MyViewHolder>(DIFF_CALLBACK) {
-
+class FollowingAdapter :
+    ListAdapter<FollowUserResponseItem, FollowingAdapter.MyViewHolder>(DIFF_CALLBACK) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -24,11 +23,11 @@ class FollowersAdapter :
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val followers = getItem(position)
-        holder.bind(followers)
+        val following = getItem(position)
+        holder.bind(following)
 
         holder.itemView.setOnClickListener {
-            val username = followers.login
+            val username = following.login
             val intentUsername =
                 Intent(holder.itemView.context, DetailUserActivity::class.java).apply {
                     putExtra(DetailUserActivity.EXTRA_USERNAME, username)

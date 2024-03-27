@@ -19,7 +19,7 @@ android {
         buildConfigField(
             "String",
             "GITHUB_ACCES_TOKEN",
-            "\"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\""
+            "\"\""
         )
         buildConfigField("String", "BASE_URL", "\"https://api.github.com/\"")
     }
