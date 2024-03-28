@@ -7,18 +7,16 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.githubuser.data.Result
-import com.example.githubuser.data.remote.response.FollowUserResponseItem
 import com.example.githubuser.databinding.FragmentFollowBinding
 import com.example.githubuser.ui.detail.follow.FollowersAdapter
 import com.example.githubuser.ui.detail.follow.FollowersViewModel
 import com.example.githubuser.ui.detail.follow.FollowersViewModelFactory
 import com.example.githubuser.ui.detail.follow.FollowingAdapter
 import com.example.githubuser.ui.detail.follow.FollowingViewModel
-import com.google.android.material.snackbar.Snackbar
+import com.example.githubuser.ui.detail.follow.FollowingViewModelFactory
 
 class FollowFragment : Fragment() {
 
@@ -52,10 +50,12 @@ class FollowFragment : Fragment() {
         }
         val followersAdapter = FollowersAdapter()
 
-        val followingViewModel = ViewModelProvider(
-            requireActivity(),
-            ViewModelProvider.NewInstanceFactory()
-        )[FollowingViewModel::class.java]
+        val factoryFollowing: FollowingViewModelFactory =
+            FollowingViewModelFactory.getInstance(requireActivity())
+        val followingViewModel: FollowingViewModel by viewModels {
+            factoryFollowing
+        }
+        val followingAdapter = FollowingAdapter()
 
 
 
@@ -75,23 +75,21 @@ class FollowFragment : Fragment() {
 
                     is Result.Success -> {
                         binding.progressBar.visibility = View.GONE
+                        binding.noFollow.visibility = View.GONE
                         val followersData = result.data
                         followersAdapter.submitList(followersData)
-                        if (followersData.isEmpty()) {
-                            binding.noFollow.visibility = View.VISIBLE
-                            binding.noFollow.text = "Tidak ada followers"
-                        } else {
-                            binding.noFollow.visibility = View.GONE
-                        }
+
                     }
 
                     is Result.Error -> {
                         binding.progressBar.visibility = View.GONE
                         Toast.makeText(
                             context,
-                            "Terjadi kesalahan menemukan followers " + result.error,
+                            "Tidak dapat menemukan followers " + result.error,
                             Toast.LENGTH_SHORT
                         ).show()
+                        binding.noFollow.visibility = View.VISIBLE
+                        binding.noFollow.text = "Tidak ada followers"
                     }
                 }
             }
@@ -103,30 +101,40 @@ class FollowFragment : Fragment() {
 
         } else {
             if (username != null) {
-                if (followingViewModel.followingResponse.value == null) {
+                if (followingViewModel.following.value == null) {
                     followingViewModel.getFollowing(username)
                 }
             }
-            followingViewModel.followingResponse.observe(viewLifecycleOwner) { userFollowing ->
-                setFollowingData(userFollowing)
-            }
-            followingViewModel.isLoading.observe(viewLifecycleOwner) {
-                showLoading(it)
-            }
-            followingViewModel.snackbarText.observe(viewLifecycleOwner) {
-                it.getContentIfNotHandled()?.let { snackBarText ->
-                    Snackbar.make(
-                        requireView(), snackBarText, Snackbar.LENGTH_SHORT
-                    ).show()
+
+            followingViewModel.following.observe(viewLifecycleOwner) { result ->
+
+                when (result) {
+                    is Result.Loading -> {
+                        binding.progressBar.visibility = View.VISIBLE
+                    }
+
+                    is Result.Success -> {
+                        binding.progressBar.visibility = View.GONE
+                        binding.noFollow.visibility = View.GONE
+                        val followingData = result.data
+                        followingAdapter.submitList(followingData)
+                    }
+
+                    is Result.Error -> {
+                        binding.progressBar.visibility = View.GONE
+                        Toast.makeText(
+                            context,
+                            "Tidak dapat menemukan following " + result.error,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        binding.noFollow.visibility = View.VISIBLE
+                        binding.noFollow.text = "Tidak ada following"
+                    }
                 }
             }
-            followingViewModel.isListEmpty.observe(viewLifecycleOwner) { isEmpty ->
-                if (isEmpty) {
-                    binding.noFollow.visibility = View.VISIBLE
-                    binding.noFollow.text = "Tidak ada following"
-                } else {
-                    binding.noFollow.visibility = View.GONE
-                }
+
+            binding.rvFollowUser.apply {
+                adapter = followingAdapter
             }
 
 
@@ -138,16 +146,6 @@ class FollowFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun setFollowingData(followData: List<FollowUserResponseItem>) {
-        val adapter = FollowingAdapter()
-        adapter.submitList(followData)
-        binding.rvFollowUser.adapter = adapter
-    }
-
-    private fun showLoading(isLoading: Boolean) {
-        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     companion object {

@@ -1,5 +1,6 @@
 package com.example.githubuser.ui.detail.follow
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -39,31 +40,33 @@ class FollowingAdapter :
 
     class MyViewHolder(private val binding: ItemUserBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(followers: FollowUserResponseItem) {
-            binding.tvUsername.text = followers.login
+        fun bind(following: FollowUserResponseItem) {
+            binding.tvUsername.text = following.login
             Glide.with(binding.root)
-                .load(followers.avatarUrl)
+                .load(following.avatarUrl)
                 .into(binding.ivUser)
-            binding.tvID.text = followers.id.toString()
+            binding.tvID.text = following.id.toString()
         }
     }
 
     companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<FollowUserResponseItem>() {
-            override fun areItemsTheSame(
-                oldItem: FollowUserResponseItem,
-                newItem: FollowUserResponseItem
-            ): Boolean {
-                return oldItem == newItem
-            }
+        val DIFF_CALLBACK: DiffUtil.ItemCallback<FollowUserResponseItem> =
+            object : DiffUtil.ItemCallback<FollowUserResponseItem>() {
+                override fun areItemsTheSame(
+                    oldItem: FollowUserResponseItem,
+                    newItem: FollowUserResponseItem
+                ): Boolean {
+                    return oldItem == newItem
+                }
 
-            override fun areContentsTheSame(
-                oldItem: FollowUserResponseItem,
-                newItem: FollowUserResponseItem
-            ): Boolean {
-                return oldItem == newItem
-            }
+                @SuppressLint("DiffUtilEquals")
+                override fun areContentsTheSame(
+                    oldItem: FollowUserResponseItem,
+                    newItem: FollowUserResponseItem
+                ): Boolean {
+                    return oldItem == newItem
+                }
 
-        }
+            }
     }
 }
