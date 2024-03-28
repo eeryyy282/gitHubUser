@@ -1,5 +1,6 @@
 package com.example.githubuser.ui.detail.follow
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -50,21 +51,23 @@ class FollowersAdapter :
     }
 
     companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<FollowUserResponseItem>() {
-            override fun areItemsTheSame(
-                oldItem: FollowUserResponseItem,
-                newItem: FollowUserResponseItem
-            ): Boolean {
-                return oldItem == newItem
-            }
+        val DIFF_CALLBACK: DiffUtil.ItemCallback<FollowUserResponseItem> =
+            object : DiffUtil.ItemCallback<FollowUserResponseItem>() {
+                override fun areItemsTheSame(
+                    oldItem: FollowUserResponseItem,
+                    newItem: FollowUserResponseItem
+                ): Boolean {
+                    return oldItem == newItem
+                }
 
-            override fun areContentsTheSame(
-                oldItem: FollowUserResponseItem,
-                newItem: FollowUserResponseItem
-            ): Boolean {
-                return oldItem == newItem
-            }
+                @SuppressLint("DIffUtilEquals")
+                override fun areContentsTheSame(
+                    oldItem: FollowUserResponseItem,
+                    newItem: FollowUserResponseItem
+                ): Boolean {
+                    return oldItem == newItem
+                }
 
-        }
+            }
     }
 }

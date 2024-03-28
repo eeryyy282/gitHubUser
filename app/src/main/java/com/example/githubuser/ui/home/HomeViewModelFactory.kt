@@ -22,7 +22,7 @@ class HomeViewModelFactory private constructor(
         fun getInstance(context: Context): HomeViewModelFactory =
             instance ?: synchronized(this) {
                 instance ?: HomeViewModelFactory(
-                    Injection.provideRepository(context)
+                    Injection.homeRepository(context)
                 )
             }.also { instance = it }
     }

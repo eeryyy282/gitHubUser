@@ -8,7 +8,7 @@ import com.example.githubuser.data.remote.response.Users
 import com.example.githubuser.data.repository.HomeRepository
 
 class HomeViewModel(
-    private val homeRepository: HomeRepository,
+    private val homeRepository: HomeRepository
 ) : ViewModel() {
     private val _users = MutableLiveData<Result<List<Users>>>()
     val users: LiveData<Result<List<Users>>>
