@@ -1,61 +1,24 @@
 package com.example.githubuser.ui.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.githubuser.data.remote.response.UserResponse
+import com.example.githubuser.data.Result
 import com.example.githubuser.data.remote.response.Users
-import com.example.githubuser.data.remote.retrofit.ApiConfig
-import com.example.githubuser.utils.Event
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.example.githubuser.data.repository.HomeRepository
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel(
+    private val homeRepository: HomeRepository,
+) : ViewModel() {
+    private val _users = MutableLiveData<Result<List<Users>>>()
+    val users: LiveData<Result<List<Users>>>
+        get() = _users
 
-    private val _userResponse = MutableLiveData<List<Users>>()
-    val userResponse: LiveData<List<Users>> = _userResponse
+    fun findUsers(username: String) {
+        _users.value = Result.Loading
 
-    private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading: LiveData<Boolean> = _isLoading
-
-    private val _snackbarText = MutableLiveData<Event<String>>()
-    val snackbarText: LiveData<Event<String>> = _snackbarText
-
-    fun findUser(username: String) {
-        _isLoading.value = true
-        val client = ApiConfig.getApiService().getUsers(username)
-        client.enqueue(object : Callback<UserResponse> {
-            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
-                _isLoading.value = false
-                if (response.isSuccessful) {
-                    val users = response.body()?.items
-                    if (users.isNullOrEmpty()) {
-                        _snackbarText.value = Event("Maaf, username tidak ditemukan :(")
-                    } else {
-                        _userResponse.value = users
-                    }
-                } else {
-                    _snackbarText.value = Event("Gagal memuat user | ${response.message()}")
-                    Log.e(TAG, "onfailure: ${response.message()}")
-                }
-            }
-
-            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                _isLoading.value = false
-                _snackbarText.value = Event("Gagal memuat user | ${t.message}")
-                Log.e(TAG, "onfailure: ${t.message}")
-            }
-
-        })
-    }
-
-    fun snackBar(message: String) {
-        _snackbarText.value = Event(message)
-    }
-
-    companion object {
-        private const val TAG = "MainActivityGitHubUser"
+        homeRepository.findUsers(username) { result ->
+            _users.value = result
+        }
     }
 }

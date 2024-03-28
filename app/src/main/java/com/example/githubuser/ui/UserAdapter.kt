@@ -1,5 +1,6 @@
 package com.example.githubuser.ui
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -47,16 +48,18 @@ class UserAdapter : ListAdapter<Users, UserAdapter.MyViewHolder>(DIFF_CALLBACK) 
     }
 
     companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Users>() {
-            override fun areItemsTheSame(oldItem: Users, newItem: Users): Boolean {
-                return oldItem == newItem
-            }
+        val DIFF_CALLBACK: DiffUtil.ItemCallback<Users> =
+            object : DiffUtil.ItemCallback<Users>() {
+                override fun areItemsTheSame(oldItem: Users, newItem: Users): Boolean {
+                    return oldItem == newItem
+                }
 
-            override fun areContentsTheSame(oldItem: Users, newItem: Users): Boolean {
-                return oldItem == newItem
-            }
+                @SuppressLint("DiffUtilEquals")
+                override fun areContentsTheSame(oldItem: Users, newItem: Users): Boolean {
+                    return oldItem == newItem
+                }
 
-        }
+            }
     }
 
 }

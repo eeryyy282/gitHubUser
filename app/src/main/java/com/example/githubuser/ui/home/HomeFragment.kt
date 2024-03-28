@@ -4,14 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.githubuser.data.remote.response.Users
+import com.example.githubuser.data.Result
 import com.example.githubuser.databinding.FragmentHomeBinding
 import com.example.githubuser.ui.UserAdapter
-import com.google.android.material.snackbar.Snackbar
 
 class HomeFragment : Fragment() {
 
@@ -29,33 +29,52 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val homeViewModel = ViewModelProvider(
-            requireActivity(), ViewModelProvider.NewInstanceFactory()
-        )[HomeViewModel::class.java]
 
-        homeViewModel.userResponse.observe(viewLifecycleOwner) { userData ->
-            setUserData(userData)
+        val factory: HomeViewModelFactory = HomeViewModelFactory.getInstance(requireActivity())
+        val homeViewModel: HomeViewModel by viewModels {
+            factory
         }
 
-        if (homeViewModel.userResponse.value.isNullOrEmpty()) {
-            homeViewModel.findUser("Airi")
+        val usersAdapter = UserAdapter()
+
+        if (homeViewModel.users.value == null) {
+            homeViewModel.findUsers("Airi")
         }
+        
+        homeViewModel.users.observe(viewLifecycleOwner) { result ->
+            if (result != null) {
+                when (result) {
+                    is Result.Loading -> {
+                        binding.progressBar.visibility = View.VISIBLE
+                    }
 
-        val layoutManager = GridLayoutManager(requireActivity(), 2)
-        binding.rvReview.layoutManager = layoutManager
-        val itemDecoration = DividerItemDecoration(requireActivity(), layoutManager.orientation)
-        binding.rvReview.addItemDecoration(itemDecoration)
+                    is Result.Success -> {
+                        binding.progressBar.visibility = View.GONE
+                        val usersData = result.data
+                        usersAdapter.submitList(usersData)
+                    }
 
-        homeViewModel.isLoading.observe(viewLifecycleOwner) {
-            showLoading(it)
-        }
-
-        homeViewModel.snackbarText.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { snackBarText ->
-                Snackbar.make(
-                    requireView(), snackBarText, Snackbar.LENGTH_SHORT
-                ).show()
+                    is Result.Error -> {
+                        binding.progressBar.visibility = View.GONE
+                        Toast.makeText(
+                            context,
+                            "Terjadi kesalahan menemukan user " + result.error,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
             }
+        }
+
+        binding.rvReview.apply {
+            layoutManager = GridLayoutManager(requireActivity(), 2)
+            adapter = usersAdapter
+            addItemDecoration(
+                DividerItemDecoration(
+                    requireActivity(),
+                    GridLayoutManager(requireActivity(), 2).orientation
+                )
+            )
         }
 
         with(binding) {
@@ -65,27 +84,22 @@ class HomeFragment : Fragment() {
                 searchView.hide()
                 val username = searchBar.text.toString()
                 if (username.isEmpty()) {
-                    homeViewModel.snackBar("Maaf, Username tidak boleh kosong :(")
+                    Toast.makeText(
+                        context,
+                        "Maaf, Username tidak boleh kosong :(",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 } else {
-                    homeViewModel.findUser(username)
+                    homeViewModel.findUsers(username)
                 }
                 false
             }
         }
+
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun showLoading(isLoading: Boolean) {
-        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-    }
-
-    private fun setUserData(userData: List<Users>) {
-        val adapter = UserAdapter()
-        adapter.submitList(userData)
-        binding.rvReview.adapter = adapter
     }
 }

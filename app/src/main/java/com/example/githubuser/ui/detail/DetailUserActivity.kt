@@ -9,16 +9,17 @@ import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.githubuser.R
+import com.example.githubuser.data.local.entity.UserFavoriteEntity
 import com.example.githubuser.data.remote.response.UserDetailResponse
 import com.example.githubuser.databinding.ActivityDetailUserBinding
 import com.example.githubuser.ui.MainActivityGitHubUser
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -26,7 +27,11 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 class DetailUserActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailUserBinding
+
+    private var avatarUrl: String? = null
+    private var id: Int? = null
     private var isDataLoaded = false
+    private var userFavoriteEntity: UserFavoriteEntity? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,16 +40,16 @@ class DetailUserActivity : AppCompatActivity() {
         binding = ActivityDetailUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val detailUserViewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.NewInstanceFactory()
+        )[DetailUserViewModel::class.java]
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        val detailUserViewModel = ViewModelProvider(
-            this,
-            ViewModelProvider.NewInstanceFactory()
-        )[DetailUserViewModel::class.java]
 
         val username = intent.getStringExtra(EXTRA_USERNAME)
         if (username != null) {
@@ -59,7 +64,7 @@ class DetailUserActivity : AppCompatActivity() {
             tab.text = resources.getString(TAB_TITTLES[position])
         }.attach()
 
-        val toolbar: Toolbar = binding.topAppBar
+        val toolbar: MaterialToolbar = binding.topAppBar
         setSupportActionBar(toolbar)
 
         supportActionBar?.setDisplayShowTitleEnabled(false)
@@ -85,6 +90,7 @@ class DetailUserActivity : AppCompatActivity() {
                 ).show()
             }
         }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -116,15 +122,23 @@ class DetailUserActivity : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun setUserData(responseBody: UserDetailResponse?) {
+        id = responseBody?.id
+        avatarUrl = responseBody?.avatarUrl.toString()
         with(binding) {
-            tvId.text = responseBody?.id.toString()
+            tvId.text = id.toString()
             tvName.text = responseBody?.name.toString()
             tvUsernameDetail.text = responseBody?.login.toString()
-            Glide.with(binding.root)
-                .load(responseBody?.avatarUrl)
-                .into(binding.ivUser)
-            tvFollowers.text = resources.getString(R.string.followers, responseBody?.followers)
-            tvFollowing.text = resources.getString(R.string.following, responseBody?.following)
+            root.let {
+                binding.ivUser.let { it1 ->
+                    Glide.with(it)
+                        .load(avatarUrl)
+                        .into(it1)
+                }
+            }
+            tvFollowers.text =
+                resources.getString(R.string.followers, responseBody?.followers)
+            tvFollowing.text =
+                resources.getString(R.string.following, responseBody?.following)
             tvLocation.text = responseBody?.location
             if (tvLocation.text.isNullOrEmpty()) {
                 tvLocation.text = "Lokasi belum ditambahkan"
