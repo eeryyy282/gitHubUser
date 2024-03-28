@@ -49,7 +49,9 @@ class DetailUserActivity : AppCompatActivity() {
 
         val username = intent.getStringExtra(EXTRA_USERNAME)
         if (username != null) {
-            detailUserViewModel.getDetailUser(username)
+            if (detailUserViewModel.detailUser.value == null) {
+                detailUserViewModel.getDetailUser(username)
+            }
         }
 
         detailUserViewModel.detailUser.observe(this) { result ->
