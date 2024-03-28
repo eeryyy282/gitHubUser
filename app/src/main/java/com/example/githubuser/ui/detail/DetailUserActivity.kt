@@ -6,21 +6,20 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.githubuser.R
-import com.example.githubuser.data.local.entity.UserFavoriteEntity
-import com.example.githubuser.data.remote.response.UserDetailResponse
+import com.example.githubuser.data.Result
 import com.example.githubuser.databinding.ActivityDetailUserBinding
 import com.example.githubuser.ui.MainActivityGitHubUser
 import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -28,11 +27,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 class DetailUserActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailUserBinding
 
-    private var avatarUrl: String? = null
-    private var id: Int? = null
-    private var isDataLoaded = false
-    private var userFavoriteEntity: UserFavoriteEntity? = null
-
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -40,10 +35,11 @@ class DetailUserActivity : AppCompatActivity() {
         binding = ActivityDetailUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val detailUserViewModel = ViewModelProvider(
-            this,
-            ViewModelProvider.NewInstanceFactory()
-        )[DetailUserViewModel::class.java]
+        val factoryUserDetail: DetailUserViewModelFactory =
+            DetailUserViewModelFactory.getInstance(application)
+        val detailUserViewModel: DetailUserViewModel by viewModels {
+            factoryUserDetail
+        }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -53,7 +49,50 @@ class DetailUserActivity : AppCompatActivity() {
 
         val username = intent.getStringExtra(EXTRA_USERNAME)
         if (username != null) {
-            detailUserViewModel.setUsername(username)
+            detailUserViewModel.getDetailUser(username)
+        }
+
+        detailUserViewModel.detailUser.observe(this) { result ->
+            if (result != null) {
+                when (result) {
+                    is Result.Loading -> {
+                        binding.progressBar.visibility = View.VISIBLE
+                    }
+
+                    is Result.Success -> {
+                        binding.progressBar.visibility = View.GONE
+                        val detailUsersData = result.data
+                        with(binding) {
+                            tvName.text = detailUsersData.name
+                            tvUsernameDetail.text = detailUsersData.login
+                            tvId.text = detailUsersData.id.toString()
+                            tvOrganitation.text = detailUsersData.company
+                            if (tvOrganitation.text.isNullOrEmpty()) {
+                                tvOrganitation.text = "Organisasi belum ditambahkan"
+                            }
+                            tvLocation.text = detailUsersData.location
+                            if (tvLocation.text.isNullOrEmpty()) {
+                                tvLocation.text = "Lokasi belum ditambahkan"
+                            }
+                            tvFollowers.text = "${detailUsersData.followers}\nFollowers"
+                            tvFollowing.text = "${detailUsersData.following}\nFollowing"
+                            Glide.with(root)
+                                .load(detailUsersData.avatarUrl)
+                                .into(ivUser)
+                        }
+
+                    }
+
+                    is Result.Error -> {
+                        binding.progressBar.visibility = View.GONE
+                        Toast.makeText(
+                            this,
+                            "Terjadi kesalahan menemukan detail user " + result.error,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
         }
 
         val sectionPageAdapter = SectionPageAdapter(this, username)
@@ -70,26 +109,6 @@ class DetailUserActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
-
-        detailUserViewModel.userDetail.observe(this) { userDetailData ->
-            setUserData(userDetailData)
-            isDataLoaded = true
-            showLoading(false)
-        }
-
-        detailUserViewModel.isLoading.observe(this) {
-            showLoading(it)
-        }
-
-        detailUserViewModel.snackbarText.observe(this) {
-            it.getContentIfNotHandled()?.let { snackBarText ->
-                Snackbar.make(
-                    window.decorView.rootView,
-                    snackBarText,
-                    Snackbar.LENGTH_SHORT
-                ).show()
-            }
-        }
 
     }
 
@@ -117,45 +136,6 @@ class DetailUserActivity : AppCompatActivity() {
             }
 
             else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun setUserData(responseBody: UserDetailResponse?) {
-        id = responseBody?.id
-        avatarUrl = responseBody?.avatarUrl.toString()
-        with(binding) {
-            tvId.text = id.toString()
-            tvName.text = responseBody?.name.toString()
-            tvUsernameDetail.text = responseBody?.login.toString()
-            root.let {
-                binding.ivUser.let { it1 ->
-                    Glide.with(it)
-                        .load(avatarUrl)
-                        .into(it1)
-                }
-            }
-            tvFollowers.text =
-                resources.getString(R.string.followers, responseBody?.followers)
-            tvFollowing.text =
-                resources.getString(R.string.following, responseBody?.following)
-            tvLocation.text = responseBody?.location
-            if (tvLocation.text.isNullOrEmpty()) {
-                tvLocation.text = "Lokasi belum ditambahkan"
-            }
-            tvOrganitation.text = responseBody?.company
-            if (tvOrganitation.text.isNullOrEmpty()) {
-                tvOrganitation.text = "Organisasi belum ditambahkan"
-            }
-        }
-    }
-
-
-    private fun showLoading(isLoading: Boolean) {
-        if (isDataLoaded) {
-            binding.progressBar.visibility = View.GONE
-        } else {
-            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
     }
 
