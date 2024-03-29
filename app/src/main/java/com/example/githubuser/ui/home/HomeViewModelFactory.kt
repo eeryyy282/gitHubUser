@@ -9,6 +9,7 @@ import com.example.githubuser.di.Injection
 class HomeViewModelFactory private constructor(
     private val homeRepository: HomeRepository
 ) : ViewModelProvider.NewInstanceFactory() {
+    @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
             return HomeViewModel(homeRepository) as T
