@@ -45,9 +45,8 @@ class DetailUserRepository(
         })
     }
 
-    fun setFavoriteUser(userFavoriteEntity: UserFavoriteEntity, username: String) {
+    fun setFavoriteUser(userFavoriteEntity: UserFavoriteEntity) {
         appExecutors.diskIO.execute {
-            userFavoriteEntity.username = username
             userFavoriteDao.addFavoriteUser(userFavoriteEntity)
         }
     }

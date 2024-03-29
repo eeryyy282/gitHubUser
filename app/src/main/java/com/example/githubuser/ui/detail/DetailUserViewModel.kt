@@ -24,8 +24,9 @@ class DetailUserViewModel(
         }
     }
 
-    fun setFavoriteUser(userFavoriteEntity: UserFavoriteEntity, username: String) {
-        detailUserRepository.setFavoriteUser(userFavoriteEntity, username)
+    fun setFavoriteUser(username: String, avatarUrl: String?, id: Int?) {
+        val userFavoriteEntity = UserFavoriteEntity(username, avatarUrl, id)
+        detailUserRepository.setFavoriteUser(userFavoriteEntity)
     }
 
     fun removeFavoriteUser(userFavoriteEntity: UserFavoriteEntity) {

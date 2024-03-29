@@ -29,6 +29,8 @@ class DetailUserActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailUserBinding
     private lateinit var detailUserViewModel: DetailUserViewModel
     private var isFavorite = false
+    private var avatarUrl: String? = null
+    private var id: Int? = null
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,6 +77,7 @@ class DetailUserActivity : AppCompatActivity() {
                             tvName.text = detailUsersData.name
                             tvUsernameDetail.text = detailUsersData.login
                             tvId.text = detailUsersData.id.toString()
+                            id = detailUsersData.id
                             tvOrganitation.text = detailUsersData.company
                             if (tvOrganitation.text.isNullOrEmpty()) {
                                 tvOrganitation.text = "Organisasi belum ditambahkan"
@@ -88,6 +91,7 @@ class DetailUserActivity : AppCompatActivity() {
                             Glide.with(root)
                                 .load(detailUsersData.avatarUrl)
                                 .into(ivUser)
+                            avatarUrl = detailUsersData.avatarUrl.toString()
                         }
 
                     }
@@ -151,7 +155,7 @@ class DetailUserActivity : AppCompatActivity() {
                         )
                             .show()
                     } else {
-                        detailUserViewModel.setFavoriteUser(userFavoriteEntity, username)
+                        detailUserViewModel.setFavoriteUser(username, avatarUrl, id)
                         Toast.makeText(
                             this,
                             "$username\nditambahkan ke favorit",
