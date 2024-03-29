@@ -4,6 +4,7 @@ import android.content.Context
 import com.example.githubuser.data.local.UserFavoriteDatabase
 import com.example.githubuser.data.remote.retrofit.ApiConfig
 import com.example.githubuser.data.repository.DetailUserRepository
+import com.example.githubuser.data.repository.FavoriteRepository
 import com.example.githubuser.data.repository.FollowersRepository
 import com.example.githubuser.data.repository.FollowingRepository
 import com.example.githubuser.data.repository.HomeRepository
@@ -31,5 +32,11 @@ object Injection {
         val userFavoriteDao = database.userFavoriteDao()
         val appExecutors = AppExecutors()
         return DetailUserRepository.getInstance(apiService, userFavoriteDao, appExecutors)
+    }
+
+    fun favoriteRepository(context: Context): FavoriteRepository {
+        val database = UserFavoriteDatabase.getInstance(context)
+        val userFavoriteDao = database.userFavoriteDao()
+        return FavoriteRepository.getInstance(userFavoriteDao)
     }
 }

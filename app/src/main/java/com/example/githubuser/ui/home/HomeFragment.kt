@@ -40,7 +40,7 @@ class HomeFragment : Fragment() {
         if (homeViewModel.users.value == null) {
             homeViewModel.findUsers("Airi")
         }
-        
+
         homeViewModel.users.observe(viewLifecycleOwner) { result ->
             if (result != null) {
                 when (result) {
@@ -66,7 +66,7 @@ class HomeFragment : Fragment() {
             }
         }
 
-        binding.rvReview.apply {
+        binding.rvUserHome.apply {
             layoutManager = GridLayoutManager(requireActivity(), 2)
             adapter = usersAdapter
             addItemDecoration(
