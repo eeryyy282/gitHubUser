@@ -21,7 +21,7 @@ android {
         buildConfigField(
             "String",
             "GITHUB_ACCES_TOKEN",
-            "\"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\""
+            "\"\""
         )
         buildConfigField("String", "BASE_URL", "\"https://api.github.com/\"")
     }
@@ -61,6 +61,7 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     testImplementation(libs.junit)
+    testImplementation("junit:junit:4.12")
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.glide)
