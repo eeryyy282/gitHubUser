@@ -31,6 +31,7 @@ class DetailUserActivity : AppCompatActivity() {
     private var isFavorite = false
     private var avatarUrl: String? = null
     private var id: Int? = null
+    private var userUrl: String? = null
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,6 +93,7 @@ class DetailUserActivity : AppCompatActivity() {
                                 .load(detailUsersData.avatarUrl)
                                 .into(ivUser)
                             avatarUrl = detailUsersData.avatarUrl.toString()
+                            userUrl = detailUsersData.url.toString()
                         }
 
                     }
