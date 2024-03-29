@@ -52,6 +52,13 @@ class DetailUserRepository(
         }
     }
 
+    fun removeFavoriteUser(userFavoriteEntity: UserFavoriteEntity) {
+        appExecutors.diskIO.execute {
+            userFavoriteDao.removeFavoriteUser(userFavoriteEntity)
+        }
+    }
+
+
     fun getFavoriteUserByUsername(username: String): LiveData<UserFavoriteEntity> {
         return userFavoriteDao.getUsersFavoriteByUsername(username)
     }

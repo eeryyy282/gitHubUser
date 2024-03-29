@@ -143,7 +143,12 @@ class DetailUserActivity : AppCompatActivity() {
                 if (username != null) {
                     val userFavoriteEntity = UserFavoriteEntity(username)
                     if (isFavorite) {
-                        Toast.makeText(this, "$username\ndihapus dari favorit", Toast.LENGTH_SHORT)
+                        detailUserViewModel.removeFavoriteUser(userFavoriteEntity)
+                        Toast.makeText(
+                            this,
+                            "$username\ndihapus dari favorit",
+                            Toast.LENGTH_SHORT
+                        )
                             .show()
                     } else {
                         detailUserViewModel.setFavoriteUser(userFavoriteEntity, username)

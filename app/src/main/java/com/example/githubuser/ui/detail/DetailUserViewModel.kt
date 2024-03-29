@@ -28,6 +28,10 @@ class DetailUserViewModel(
         detailUserRepository.setFavoriteUser(userFavoriteEntity, username)
     }
 
+    fun removeFavoriteUser(userFavoriteEntity: UserFavoriteEntity) {
+        detailUserRepository.removeFavoriteUser(userFavoriteEntity)
+    }
+
     fun isFavoriteUser(username: String): LiveData<Boolean> {
         val isFavoriteLiveData = MutableLiveData<Boolean>()
         val favoriteUserLiveData = detailUserRepository.getFavoriteUserByUsername(username)
