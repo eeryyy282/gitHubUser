@@ -46,6 +46,13 @@ class FavoriteFragment : Fragment() {
                 items.add(item)
             }
             userAdapter.submitList(items)
+
+            if (items.isEmpty()) {
+                binding.noFavorite.visibility = View.VISIBLE
+                binding.noFavorite.text = "Tidak ada user favorite"
+            } else {
+                binding.noFavorite.visibility = View.GONE
+            }
         }
 
         binding.rvUserFavorite.apply {
