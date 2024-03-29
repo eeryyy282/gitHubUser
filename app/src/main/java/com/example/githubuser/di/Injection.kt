@@ -1,11 +1,13 @@
 package com.example.githubuser.di
 
 import android.content.Context
+import com.example.githubuser.data.local.UserFavoriteDatabase
 import com.example.githubuser.data.remote.retrofit.ApiConfig
 import com.example.githubuser.data.repository.DetailUserRepository
 import com.example.githubuser.data.repository.FollowersRepository
 import com.example.githubuser.data.repository.FollowingRepository
 import com.example.githubuser.data.repository.HomeRepository
+import com.example.githubuser.utils.AppExecutors
 
 object Injection {
     fun homeRepository(context: Context): HomeRepository {
@@ -25,6 +27,9 @@ object Injection {
 
     fun detailUserRepository(context: Context): DetailUserRepository {
         val apiService = ApiConfig.getApiService()
-        return DetailUserRepository.getInstance(apiService)
+        val database = UserFavoriteDatabase.getInstance(context)
+        val userFavoriteDao = database.userFavoriteDao()
+        val appExecutors = AppExecutors()
+        return DetailUserRepository.getInstance(apiService, userFavoriteDao, appExecutors)
     }
 }

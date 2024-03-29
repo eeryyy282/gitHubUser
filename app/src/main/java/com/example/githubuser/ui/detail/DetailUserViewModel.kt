@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.githubuser.data.Result
+import com.example.githubuser.data.local.entity.UserFavoriteEntity
 import com.example.githubuser.data.remote.response.UserDetailResponse
 import com.example.githubuser.data.repository.DetailUserRepository
 
@@ -22,4 +23,21 @@ class DetailUserViewModel(
             _detailUser.value = result
         }
     }
+
+    fun setFavoriteUser(userFavoriteEntity: UserFavoriteEntity, username: String) {
+        detailUserRepository.setFavoriteUser(userFavoriteEntity, username)
+    }
+
+    fun isFavoriteUser(username: String): LiveData<Boolean> {
+        val isFavoriteLiveData = MutableLiveData<Boolean>()
+        val favoriteUserLiveData = detailUserRepository.getFavoriteUserByUsername(username)
+
+        favoriteUserLiveData.observeForever { userFavoriteEntity ->
+            val isFavorite = userFavoriteEntity != null
+            isFavoriteLiveData.value = isFavorite
+        }
+        return isFavoriteLiveData
+    }
+
+
 }

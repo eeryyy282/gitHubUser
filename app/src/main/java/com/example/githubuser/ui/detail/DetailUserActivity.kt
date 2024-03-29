@@ -8,15 +8,16 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.githubuser.R
 import com.example.githubuser.data.Result
+import com.example.githubuser.data.local.entity.UserFavoriteEntity
 import com.example.githubuser.databinding.ActivityDetailUserBinding
 import com.example.githubuser.ui.MainActivityGitHubUser
 import com.google.android.material.appbar.MaterialToolbar
@@ -26,6 +27,8 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 class DetailUserActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailUserBinding
+    private lateinit var detailUserViewModel: DetailUserViewModel
+    private var isFavorite = false
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,9 +40,9 @@ class DetailUserActivity : AppCompatActivity() {
 
         val factoryUserDetail: DetailUserViewModelFactory =
             DetailUserViewModelFactory.getInstance(application)
-        val detailUserViewModel: DetailUserViewModel by viewModels {
-            factoryUserDetail
-        }
+        detailUserViewModel =
+            ViewModelProvider(this, factoryUserDetail).get(DetailUserViewModel::class.java)
+
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -51,6 +54,10 @@ class DetailUserActivity : AppCompatActivity() {
         if (username != null) {
             if (detailUserViewModel.detailUser.value == null) {
                 detailUserViewModel.getDetailUser(username)
+            }
+            detailUserViewModel.isFavoriteUser(username).observe(this) { favorite ->
+                isFavorite = favorite
+                invalidateOptionsMenu()
             }
         }
 
@@ -116,6 +123,8 @@ class DetailUserActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.detail_user_nav, menu)
+        val favoriteMenuItem = menu?.findItem(R.id.favorite)
+        favoriteMenuItem?.setIcon(if (isFavorite) R.drawable.baseline_favorite_24 else R.drawable.baseline_favorite_border_24)
         return true
     }
 
@@ -130,6 +139,21 @@ class DetailUserActivity : AppCompatActivity() {
             }
 
             R.id.favorite -> {
+                val username = intent.getStringExtra(EXTRA_USERNAME)
+                if (username != null) {
+                    val userFavoriteEntity = UserFavoriteEntity(username)
+                    if (isFavorite) {
+                        Toast.makeText(this, "$username\ndihapus dari favorit", Toast.LENGTH_SHORT)
+                            .show()
+                    } else {
+                        detailUserViewModel.setFavoriteUser(userFavoriteEntity, username)
+                        Toast.makeText(
+                            this,
+                            "$username\nditambahkan ke favorit",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
                 true
             }
 

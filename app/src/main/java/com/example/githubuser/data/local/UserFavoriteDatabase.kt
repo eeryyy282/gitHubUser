@@ -15,7 +15,7 @@ abstract class UserFavoriteDatabase : RoomDatabase() {
         private var INSTANCE: UserFavoriteDatabase? = null
 
         @JvmStatic
-        fun getDatabase(context: Context): UserFavoriteDatabase {
+        fun getInstance(context: Context): UserFavoriteDatabase {
             if (INSTANCE == null) {
                 synchronized(UserFavoriteDatabase::class.java) {
                     INSTANCE = Room.databaseBuilder(

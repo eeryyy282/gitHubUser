@@ -17,9 +17,6 @@ interface UserFavoriteDao {
     @Delete
     fun removeFavoriteUser(userFavoriteEntity: UserFavoriteEntity)
 
-    @Query("SELECT * from UserFavoriteEntity WHERE username = :username")
+    @Query("SELECT * FROM UserFavoriteEntity WHERE username = :username")
     fun getUsersFavoriteByUsername(username: String): LiveData<UserFavoriteEntity>
-
-    @Query("SELECT * from UserFavoriteEntity ORDER BY username ASC")
-    fun getAllFavoriteUsers(): LiveData<List<UserFavoriteEntity>>
 }

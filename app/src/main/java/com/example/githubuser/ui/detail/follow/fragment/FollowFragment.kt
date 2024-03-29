@@ -85,7 +85,7 @@ class FollowFragment : Fragment() {
                         binding.progressBar.visibility = View.GONE
                         Toast.makeText(
                             context,
-                            "Tidak dapat menemukan followers " + result.error,
+                            result.error,
                             Toast.LENGTH_SHORT
                         ).show()
                         binding.noFollow.visibility = View.VISIBLE
@@ -124,7 +124,7 @@ class FollowFragment : Fragment() {
                         binding.progressBar.visibility = View.GONE
                         Toast.makeText(
                             context,
-                            "Tidak dapat menemukan following " + result.error,
+                            result.error,
                             Toast.LENGTH_SHORT
                         ).show()
                         binding.noFollow.visibility = View.VISIBLE
