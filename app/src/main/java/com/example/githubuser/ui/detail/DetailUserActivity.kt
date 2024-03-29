@@ -163,7 +163,7 @@ class DetailUserActivity : AppCompatActivity() {
 
             R.id.favorite -> {
                 val username = intent.getStringExtra(EXTRA_USERNAME)
-                if (username != null) {
+                if (username != null && binding.tvUsernameDetail.text.isNotEmpty()) {
                     val userFavoriteEntity = UserFavoriteEntity(username)
                     if (isFavorite) {
                         detailUserViewModel.removeFavoriteUser(userFavoriteEntity)
@@ -186,18 +186,20 @@ class DetailUserActivity : AppCompatActivity() {
             }
 
             R.id.share -> {
-                val url = "https://github.com/"
-                val username = binding.tvUsernameDetail.text
-                val sendIntent: Intent = Intent().apply {
-                    action = Intent.ACTION_SEND
-                    putExtra(
-                        Intent.EXTRA_TEXT,
-                        "$url$username\nLihat siapa yang saya temukan! Cek profil $username dengan mengklik tautan di atas!"
-                    )
-                    type = "text/plain"
+                if (binding.tvUsernameDetail.text.isNotEmpty()) {
+                    val url = "https://github.com/"
+                    val username = binding.tvUsernameDetail.text
+                    val sendIntent: Intent = Intent().apply {
+                        action = Intent.ACTION_SEND
+                        putExtra(
+                            Intent.EXTRA_TEXT,
+                            "$url$username\nLihat siapa yang saya temukan! Cek profil $username dengan mengklik tautan di atas!"
+                        )
+                        type = "text/plain"
+                    }
+                    val shareIntent = Intent.createChooser(sendIntent, "Bagikan $username")
+                    startActivity(shareIntent)
                 }
-                val shareIntent = Intent.createChooser(sendIntent, "Bagikan $username")
-                startActivity(shareIntent)
                 true
             }
 

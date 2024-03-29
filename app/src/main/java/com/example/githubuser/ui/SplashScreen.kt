@@ -26,11 +26,6 @@ class SplashScreen : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        Handler(Looper.getMainLooper()).postDelayed({
-            val intent = Intent(this, MainActivityGitHubUser::class.java)
-            startActivity(intent)
-            finish()
-        }, 2000)
 
         val pref = SettingPreferences.getInstance(application.dataStore)
         val settingViewModel = ViewModelProvider(this, SettingViewModelFactory(pref)).get(
@@ -44,5 +39,11 @@ class SplashScreen : AppCompatActivity() {
                 delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_NO
             }
         }
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            val intent = Intent(this, MainActivityGitHubUser::class.java)
+            startActivity(intent)
+            finish()
+        }, 2000)
     }
 }

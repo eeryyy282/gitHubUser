@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <item
         android:id="@+id/favorite"
         android:icon="@drawable/baseline_favorite_border_24"
         android:iconTint="?android:textColorPrimary"
         android:title="@string/favorite"
-        app:showAsAction="always" />
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction"
+        tools:targetApi="o" />
     <item
         android:id="@+id/share"
         android:icon="@drawable/baseline_share_24"
         android:iconTint="?android:textColorPrimary"
         android:title="@string/share"
-        app:showAsAction="always" />
+        app:showAsAction="always"
+        tools:targetApi="o" />
 </menu>
