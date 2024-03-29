@@ -31,7 +31,6 @@ class DetailUserActivity : AppCompatActivity() {
     private var isFavorite = false
     private var avatarUrl: String? = null
     private var id: Int? = null
-    private var userUrl: String? = null
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,7 +92,6 @@ class DetailUserActivity : AppCompatActivity() {
                                 .load(detailUsersData.avatarUrl)
                                 .into(ivUser)
                             avatarUrl = detailUsersData.avatarUrl.toString()
-                            userUrl = detailUsersData.url.toString()
                         }
 
                     }
@@ -169,6 +167,18 @@ class DetailUserActivity : AppCompatActivity() {
             }
 
             R.id.share -> {
+                val url = "https://github.com/"
+                val username = binding.tvUsernameDetail.text
+                val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(
+                        Intent.EXTRA_TEXT,
+                        "$url$username\nLihat siapa yang saya temukan! Cek profil $username dengan mengklik tautan di atas!"
+                    )
+                    type = "text/plain"
+                }
+                val shareIntent = Intent.createChooser(sendIntent, "Bagikan $username")
+                startActivity(shareIntent)
                 true
             }
 

@@ -2,9 +2,9 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/main"
     tools:context=".ui.detail.DetailUserActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -16,17 +16,17 @@
             android:id="@+id/topAppBar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:layout_marginBottom="10dp"
             app:layout_anchor="@+id/appBarLayout"
             app:layout_anchorGravity="center"
-            android:layout_marginBottom="10dp"
             app:menu="@menu/detail_user_nav" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
-        android:layout_marginTop="?attr/actionBarSize"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
         android:fillViewport="true">
 
         <LinearLayout
@@ -152,20 +152,20 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="16dp"
+                    android:contentDescription="@string/org_icon"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/baseline_work_24"
-                    android:contentDescription="@string/org_icon" />
+                    app:srcCompat="@drawable/baseline_work_24" />
 
                 <ImageView
                     android:id="@+id/imageView3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:contentDescription="@string/loc_icon"
                     app:layout_constraintStart_toStartOf="@+id/imageView2"
                     app:layout_constraintTop_toBottomOf="@+id/imageView2"
-                    app:srcCompat="@drawable/baseline_location_pin_24"
-                    android:contentDescription="@string/loc_icon" />
+                    app:srcCompat="@drawable/baseline_location_pin_24" />
 
                 <TextView
                     android:id="@+id/tvLocation"

@@ -21,7 +21,7 @@ android {
         buildConfigField(
             "String",
             "GITHUB_ACCES_TOKEN",
-            "\"\""
+            "\"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\""
         )
         buildConfigField("String", "BASE_URL", "\"https://api.github.com/\"")
     }
@@ -70,4 +70,7 @@ dependencies {
     implementation(libs.androidx.viewpager2)
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
 }

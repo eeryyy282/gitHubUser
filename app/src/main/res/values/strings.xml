@@ -20,6 +20,5 @@
     <string name="org_icon">Org Icon</string>
     <string name="loc_icon">Loc Icon</string>
     <string name="title_setting">Pengaturan</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="dark_mode">Dark Mode</string>
 </resources>

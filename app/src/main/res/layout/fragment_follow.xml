@@ -24,14 +24,14 @@
         tools:visibility="visible" />
 
     <TextView
+        android:id="@+id/noFollow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/noFollow"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="?attr/actionBarSize"
-        android:textSize="24sp"
         android:fontFamily="@font/poppins_medium"
         android:gravity="center"
-        android:layout_gravity="center_horizontal"
+        android:textSize="24sp"
         android:visibility="visible" />
 
 </FrameLayout>
