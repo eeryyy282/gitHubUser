@@ -1,10 +1,10 @@
 package com.example.githubuser.ui.detail.follow.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -31,6 +31,7 @@ class FollowFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
@@ -44,14 +45,14 @@ class FollowFragment : Fragment() {
         binding.rvFollowUser.addItemDecoration(itemDecoration)
 
         val factoryFollowers: FollowersViewModelFactory =
-            FollowersViewModelFactory.getInstance(requireActivity())
+            FollowersViewModelFactory.getInstance()
         val followersViewModel: FollowersViewModel by viewModels {
             factoryFollowers
         }
         val followersAdapter = FollowersAdapter()
 
         val factoryFollowing: FollowingViewModelFactory =
-            FollowingViewModelFactory.getInstance(requireActivity())
+            FollowingViewModelFactory.getInstance()
         val followingViewModel: FollowingViewModel by viewModels {
             factoryFollowing
         }
@@ -83,11 +84,6 @@ class FollowFragment : Fragment() {
 
                     is Result.Error -> {
                         binding.progressBar.visibility = View.GONE
-                        Toast.makeText(
-                            context,
-                            result.error,
-                            Toast.LENGTH_SHORT
-                        ).show()
                         binding.noFollow.visibility = View.VISIBLE
                         binding.noFollow.text = "Tidak ada followers"
                     }
@@ -122,11 +118,6 @@ class FollowFragment : Fragment() {
 
                     is Result.Error -> {
                         binding.progressBar.visibility = View.GONE
-                        Toast.makeText(
-                            context,
-                            result.error,
-                            Toast.LENGTH_SHORT
-                        ).show()
                         binding.noFollow.visibility = View.VISIBLE
                         binding.noFollow.text = "Tidak ada following"
                     }

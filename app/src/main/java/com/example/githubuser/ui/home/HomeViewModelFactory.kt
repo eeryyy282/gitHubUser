@@ -1,6 +1,5 @@
 package com.example.githubuser.ui.home
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.githubuser.data.repository.HomeRepository
@@ -20,10 +19,10 @@ class HomeViewModelFactory private constructor(
     companion object {
         @Volatile
         private var instance: HomeViewModelFactory? = null
-        fun getInstance(context: Context): HomeViewModelFactory =
+        fun getInstance(): HomeViewModelFactory =
             instance ?: synchronized(this) {
                 instance ?: HomeViewModelFactory(
-                    Injection.homeRepository(context)
+                    Injection.homeRepository()
                 )
             }.also { instance = it }
     }

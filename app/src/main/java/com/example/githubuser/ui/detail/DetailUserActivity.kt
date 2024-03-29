@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
@@ -20,6 +21,10 @@ import com.example.githubuser.data.Result
 import com.example.githubuser.data.local.entity.UserFavoriteEntity
 import com.example.githubuser.databinding.ActivityDetailUserBinding
 import com.example.githubuser.ui.MainActivityGitHubUser
+import com.example.githubuser.ui.setting.SettingPreferences
+import com.example.githubuser.ui.setting.SettingViewModel
+import com.example.githubuser.ui.setting.SettingViewModelFactory
+import com.example.githubuser.ui.setting.dataStore
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -43,7 +48,21 @@ class DetailUserActivity : AppCompatActivity() {
         val factoryUserDetail: DetailUserViewModelFactory =
             DetailUserViewModelFactory.getInstance(application)
         detailUserViewModel =
-            ViewModelProvider(this, factoryUserDetail).get(DetailUserViewModel::class.java)
+            ViewModelProvider(this, factoryUserDetail)[DetailUserViewModel::class.java]
+
+        val pref = SettingPreferences.getInstance(application.dataStore)
+        val settingViewModel = ViewModelProvider(
+            this,
+            SettingViewModelFactory(pref)
+        )[SettingViewModel::class.java]
+
+        settingViewModel.getThemeSetting().observe(this) { isDarkModeActive ->
+            if (isDarkModeActive) {
+                delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES
+            } else {
+                delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_NO
+            }
+        }
 
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->

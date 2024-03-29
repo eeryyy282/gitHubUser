@@ -11,17 +11,17 @@ import com.example.githubuser.data.repository.HomeRepository
 import com.example.githubuser.utils.AppExecutors
 
 object Injection {
-    fun homeRepository(context: Context): HomeRepository {
+    fun homeRepository(): HomeRepository {
         val apiService = ApiConfig.getApiService()
         return HomeRepository.getInstance(apiService)
     }
 
-    fun followersRepository(context: Context): FollowersRepository {
+    fun followersRepository(): FollowersRepository {
         val apiService = ApiConfig.getApiService()
         return FollowersRepository.getInstance(apiService)
     }
 
-    fun followingRepository(context: Context): FollowingRepository {
+    fun followingRepository(): FollowingRepository {
         val apiService = ApiConfig.getApiService()
         return FollowingRepository.getInstance(apiService)
     }

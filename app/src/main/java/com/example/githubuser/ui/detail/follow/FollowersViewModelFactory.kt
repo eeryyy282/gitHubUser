@@ -1,6 +1,5 @@
 package com.example.githubuser.ui.detail.follow
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.githubuser.data.repository.FollowersRepository
@@ -9,6 +8,7 @@ import com.example.githubuser.di.Injection
 class FollowersViewModelFactory private constructor(
     private val followersRepository: FollowersRepository
 ) : ViewModelProvider.NewInstanceFactory() {
+    @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(FollowersViewModel::class.java)) {
             return FollowersViewModel(followersRepository) as T
@@ -19,10 +19,10 @@ class FollowersViewModelFactory private constructor(
     companion object {
         @Volatile
         private var instance: FollowersViewModelFactory? = null
-        fun getInstance(context: Context): FollowersViewModelFactory =
+        fun getInstance(): FollowersViewModelFactory =
             instance ?: synchronized(this) {
                 instance ?: FollowersViewModelFactory(
-                    Injection.followersRepository(context)
+                    Injection.followersRepository()
                 )
             }.also { instance = it }
     }

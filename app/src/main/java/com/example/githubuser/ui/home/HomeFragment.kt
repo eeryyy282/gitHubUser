@@ -30,7 +30,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val factory: HomeViewModelFactory = HomeViewModelFactory.getInstance(requireActivity())
+        val factory: HomeViewModelFactory = HomeViewModelFactory.getInstance()
         val homeViewModel: HomeViewModel by viewModels {
             factory
         }
@@ -56,6 +56,7 @@ class HomeFragment : Fragment() {
 
                     is Result.Error -> {
                         binding.progressBar.visibility = View.GONE
+                        homeViewModel.findUsers("Airi")
                         Toast.makeText(
                             context,
                             "Terjadi kesalahan menemukan user " + result.error,
